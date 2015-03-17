@@ -21,9 +21,9 @@ will need to be familiar with both Google Apps and FireManager's REST-ful API.
 ### Google Apps Script
 3. Log into **Google Drive** with your Google Apps account.
 4. Click on the "Create" button
-    a. If "Script" is not a menu item, click the "Connect more apps" link
-    b. Search for "google apps script"
-    c. Click the "+ CONNECT" button for "Google Apps Script"
+  1. If "Script" is not a menu item, click the "Connect more apps" link
+  2. Search for "google apps script"
+  3. Click the "+ CONNECT" button for "Google Apps Script"
 5. Click on the "Script" menu item
 6. Click on the "Blank Project" item
 7. Copy `ReconcileUsers.gs` from this repo and replace the contents entirely of `Code.gs`
