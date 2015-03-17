@@ -21,6 +21,19 @@
 
 /** ReconcileUsers.gs - Ensures a Google Apps Group is in sync with FireManager
  * @author Christopher Watford <christopher.watford@lelandfirerescue.com>
+ * 
+ * Required Script Properties:
+ * 
+ * FM_ACCID - FireManager `accid` for their API
+ * FM_ACCKEY - FireManager `acckey` for their API
+ * FM_CUSID - FireManager `cusid` for their API
+ * GA_GROUP_EMAIL - Google Apps group email address to manage
+ * GA_REPORT_EMAIL - Email address to receive reports regarding group management
+ * 
+ * Default Implementation Script Properties:
+ * 
+ * FM_EMPLOYEE_TYPES - Comma separated list of "Employee Types" to add
+ *                     to the Google group address.
  */
 
 var FireManager = function () {
