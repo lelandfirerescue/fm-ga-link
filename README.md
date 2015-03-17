@@ -72,7 +72,12 @@ will need to be familiar with both Google Apps and FireManager's REST-ful API.
 The stock `ReconcileUsers` function contains logic to select users based on their "Employee Type"
 attribute found in the FireManager database, however, any criteria could be used. To retain the
 stock behavior follow the steps to add a new *Script Property* called `FM_EMPLOYEE_TYPES` with
-a comma separated value of desired employee types. The code in question which selects suitable
+a comma separated value of desired employee types.
+
+```js
+var _fmEmpTypes = props.getProperty("FM_EMPLOYEE_TYPES").split(',');
+```
+The code in question which selects suitable
 members from the FireManager database is found within `ReconcileUsers` and looks like:
 
 ```js
