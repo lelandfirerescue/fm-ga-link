@@ -93,3 +93,8 @@ var _fmUsers = FM.getUsers(function (member) {
   return /@ourdomain.com$/.test(member.email)
 });
 ```
+
+## Debugging
+A [POSTMAN Collection](http://www.getpostman.com/) is included in this repo which you can use to debug the
+responses from the Aladtec REST API. Be sure to set your `accid`, `acckey`, and `cusid` correctly
+before running it. Also remember to never share those values.
