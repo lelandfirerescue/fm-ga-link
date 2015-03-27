@@ -19,14 +19,14 @@
  * THE SOFTWARE.
  */
 
-/** ReconcileUsers.gs - Ensures a Google Apps Group is in sync with FireManager
+/** ReconcileUsers.gs - Ensures a Google Apps Group is in sync with Aladtec
  * @author Christopher Watford <christopher.watford@lelandfirerescue.com>
  * 
  * Required Script Properties:
  * 
- * FM_ACCID - FireManager `accid` for their API
- * FM_ACCKEY - FireManager `acckey` for their API
- * FM_CUSID - FireManager `cusid` for their API
+ * FM_ACCID - `accid` for Aladtec's API
+ * FM_ACCKEY - `acckey` for Aladtec's API
+ * FM_CUSID - `cusid` for Aladtec's API
  * GA_GROUP_EMAIL - Google Apps group email address to manage
  * GA_REPORT_EMAIL - Email address to receive reports regarding group management
  * 
@@ -36,11 +36,11 @@
  *                     to the Google group address.
  */
 
-var FireManager = function () {
+var AladtecApi = function () {
   this._endpoint = "https://secure2.aladtec.com/api/index.php";
 };
 
-FireManager.prototype.getMembersPayload = function () {
+AladtecApi.prototype.getMembersPayload = function () {
   // CAW: leave these as properties so that if you share the source
   // of your script you do not leak your private properties!
   var props = PropertiesService.getScriptProperties();
@@ -54,7 +54,7 @@ FireManager.prototype.getMembersPayload = function () {
   // ?accid=449543&acckey=J398NJT798U40CC0K2GYR4Z1I3D7TLYE&cusid=99876&cmd=getMembers
 };
 
-FireManager.prototype.requestUsersXml = function () {
+AladtecApi.prototype.requestUsersXml = function () {
   var options = {
     method: "post",
     payload: this.getMembersPayload()
@@ -66,7 +66,7 @@ FireManager.prototype.requestUsersXml = function () {
   return xdoc;
 };
 
-FireManager.createMemberFromXml = function (xmember) {
+AladtecApi.createMemberFromXml = function (xmember) {
   var member = { };
   
   var xattrs = xmember.getChild("attributes").getChildren("attribute");
@@ -88,7 +88,7 @@ FireManager.createMemberFromXml = function (xmember) {
   return member;
 }
 
-FireManager.prototype.getUsers = function (checkUser) {
+AladtecApi.prototype.getUsers = function (checkUser) {
   var members = { };
   
   var xdoc = this.requestUsersXml();
@@ -96,7 +96,7 @@ FireManager.prototype.getUsers = function (checkUser) {
   
   var xmembers = xroot.getChild("members").getChildren("member");
   for (var ii = 0; ii < xmembers.length; ++ii) {
-    var member = FireManager.createMemberFromXml(xmembers[ii]);
+    var member = AladtecApi.createMemberFromXml(xmembers[ii]);
     if (checkUser(member)) {
       if (member.email) {
         members[member.email.toLowerCase()] = member;
@@ -165,15 +165,15 @@ function ReconcileUsers() {
     existingUsers[user.email.toLowerCase()] = user;
   }
   
-  // 2. Get users from FM
-  var FM = new FireManager();
+  // 2. Get users from Aladtec
+  var MemberDatabase = new Aladtec();
   
   /** IMPLEMENTOR'S NOTE:
    *  The predicate passed to `getUsers()` is what you should update
    *  to select users. The current method presumes you have an 'employee_type'
-   *  attribute returned by the FireManager API.
+   *  attribute returned by the Aladtec API.
    */
-  var _fmUsers = FM.getUsers(function (member) {
+  var _fmUsers = MemberDatabase.getUsers(function (member) {
     return !_fmEmpTypes || _fmEmpTypes.indexOf(member.employee_type) >= 0;
   });
   
@@ -191,7 +191,7 @@ function ReconcileUsers() {
           // CAW: sometimes users get added to a Google Group with an @gmail.com email
           // address, but actually have some other google email (such as @googlemail.com).
           // This allows us to test for those users and report it back to the administrator
-          // so they can update their email in FireManager.
+          // so they can update their email in Aladtec.
           if (addedUser.email.toLowerCase() != email) {
             Logger.log("User %s already exists in '%s' but under %s", email, _googleGroup, addedUser.email);
             updated[email] = addedUser.email;
@@ -233,10 +233,10 @@ function ReconcileUsers() {
     for (var u in updated) {
       if (updated.hasOwnProperty(u) && added.indexOf(u) >= 0) {
         if (!updatedBody) {
-          updatedBody = '\nThe following users have mismatched emails (please update in FM):';
+          updatedBody = '\nThe following users have mismatched emails (please update in Aladtec):';
         }
         
-        updatedBody += '\n' + updated[u] + ' is listed in FM as ' + u;
+        updatedBody += '\n' + updated[u] + ' is listed in Aladtec as ' + u;
       }
     }
     
