@@ -1,20 +1,20 @@
 # fm-ga-link
-Provides a link between FireManager and Google Apps to ensure a Group Email is up-to-date.
+Provides a link between [Aladtec's scheduling software](http://www.aladtec.com) and Google Apps to ensure a Group Email is up-to-date.
 
 ## Introduction
 **fm-ga-link** is a Google Apps Script intended to be used to synchronize a Google Group
-with a list of users from Aladtec's FireManager database. This script assumes you have
-a single group email which can be mapped to users in your FireManager database by some
+with a list of users from Aladtec's member database. This script assumes you have
+a single group email which can be mapped to users in your member database by some
 attribute (e.g. employee type). End-users of these products wishing to use this script
 will need to be familiar with both Google Apps and FireManager's REST-ful API.
 
 ## Pre-Requisites
-1. Aladtec FireManager API keys (`accid`, `acckey`, and `cusid`)
+1. Aladtec API keys (`accid`, `acckey`, and `cusid`)
 2. Google Apps for Business Account
 
 ## Installation
 
-### FireManager Prerequisites
+### Aladtec Prerequisites
 1. At a minimum, request API access to the `email` attribute from Aladtec support.
 2. Request any additional attributes you will need to determine which user should go into the group.
  
@@ -70,21 +70,21 @@ will need to be familiar with both Google Apps and FireManager's REST-ful API.
 
 ### Customizing the Implementation
 The stock `ReconcileUsers` function contains logic to select users based on their "Employee Type"
-attribute found in the FireManager database, however, any criteria could be used. To retain the
+attribute found in the Aladtec database, however, any criteria could be used. To retain the
 stock behavior follow the steps to add a new *Script Property* called `FM_EMPLOYEE_TYPES` with
 a comma separated value of desired employee types.
 
 ```js
 var _fmEmpTypes = props.getProperty("FM_EMPLOYEE_TYPES").split(',');
 ```
-The code in question which selects suitable
-members from the FireManager database is found within `ReconcileUsers` and looks like:
+The code in question which selects suitable members from the Aladtec database is found
+within `ReconcileUsers` and looks like:
 
 ```js
 /** IMPLEMENTOR'S NOTE:
  *  The predicate passed to `getUsers()` is what you should update
  *  to select users. The current method presumes you have an 'employee_type'
- *  attribute returned by the FireManager API.
+ *  attribute returned by the Aladtec API.
  */
 var _fmUsers = FM.getUsers(function (member) {
   return !_fmEmpTypes || _fmEmpTypes.indexOf(member.employee_type) >= 0;
