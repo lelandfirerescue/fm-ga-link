@@ -9,8 +9,9 @@ attribute (e.g. employee type). End-users of these products wishing to use this 
 will need to be familiar with both Google Apps and FireManager's REST-ful API.
 
 ## Pre-Requisites
-1. Aladtec API keys (`accid`, `acckey`, and `cusid`)
-2. Google Apps for Business Account
+1. Aladtec API endpoint for your accound
+2. Aladtec API keys (`accid`, and `acckey`)
+3. Google Apps for Business Account
 
 ## Installation
 
@@ -49,7 +50,7 @@ will need to be familiar with both Google Apps and FireManager's REST-ful API.
 23. Click on the "+Add row" link
 24. Add the property `FM_ACCKEY` with the value of your `acckey` given to you by Aladtec
 25. Click on the "+Add row" link
-26. Add the property `FM_CUSID` with the value of your `cusid` given to you by Aladtec
+26. Add the property `FM_ENDPOINT` with the URI of your endpoint given to you by Aladtec
 27. Click on the "+Add row" link
 28. Add the property `GA_GROUP_EMAIL` with the email address of the Google Group being managed
 29. Click on the "+Add row" link
@@ -101,5 +102,5 @@ var _fmUsers = FM.getUsers(function (member) {
 
 ## Debugging
 A [POSTMAN Collection](http://www.getpostman.com/) is included in this repo which you can use to debug the
-responses from the Aladtec REST API. Be sure to set your `accid`, `acckey`, and `cusid` correctly
+responses from the Aladtec REST API. Be sure to set your `accid`, `acckey`, URI correctly
 before running it. Also remember to never share those values.
