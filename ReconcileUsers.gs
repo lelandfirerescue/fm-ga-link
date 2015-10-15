@@ -24,9 +24,9 @@
  * 
  * Required Script Properties:
  * 
+ * FM_ENDPOINT - Your endpoint to Aladtec's API
  * FM_ACCID - `accid` for Aladtec's API
  * FM_ACCKEY - `acckey` for Aladtec's API
- * FM_CUSID - `cusid` for Aladtec's API
  * GA_GROUP_EMAIL - Google Apps group email address to manage
  * GA_REPORT_EMAIL - Email address to receive reports regarding group management
  * 
@@ -36,8 +36,8 @@
  *                     to the Google group address.
  */
 
-var AladtecApi = function () {
-  this._endpoint = "https://secure2.aladtec.com/api/index.php";
+var AladtecApi = function (endpoint) {
+  this._endpoint = endpoint;
 };
 
 AladtecApi.prototype.getMembersPayload = function () {
@@ -151,6 +151,7 @@ function ReconcileUsers() {
       removed = [];
       
   var props = PropertiesService.getScriptProperties();
+  var _fmEndpoint = props.getProperty("FM_ENDPOINT");
   var _googleGroup = props.getProperty("GA_GROUP_EMAIL");
   var _fmEmpTypes = props.getProperty("FM_EMPLOYEE_TYPES").split(',');
   var _reportEmail = props.getProperty("GA_REPORT_EMAIL");
@@ -166,7 +167,7 @@ function ReconcileUsers() {
   }
   
   // 2. Get users from Aladtec
-  var MemberDatabase = new Aladtec();
+  var MemberDatabase = new AladtecApi(_fmEndpoint);
   
   /** IMPLEMENTOR'S NOTE:
    *  The predicate passed to `getUsers()` is what you should update
