@@ -46,12 +46,10 @@ AladtecApi.prototype.getMembersPayload = function () {
   var props = PropertiesService.getScriptProperties();
   var _accid = props.getProperty("FM_ACCID");
   var _acckey = props.getProperty("FM_ACCKEY");
-  var _cusid = props.getProperty("FM_CUSID");
   return "accid=" + _accid
        + "&acckey=" + _acckey
-       + "&cusid=" + _cusid
        + "&cmd=getMembers&ia=all";
-  // ?accid=449543&acckey=J398NJT798U40CC0K2GYR4Z1I3D7TLYE&cusid=99876&cmd=getMembers
+  // ?accid=449543&acckey=J398NJT798U40CC0K2GYR4Z1I3D7TLYE&cmd=getMembers
 };
 
 AladtecApi.prototype.requestUsersXml = function () {
